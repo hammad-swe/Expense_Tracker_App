@@ -15,13 +15,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
+
                 let window = UIWindow(windowScene: windowScene)
+
                 let splashVC = SplashViewController(nibName: "SplashViewController", bundle: nil)
                 let navController = UINavigationController(rootViewController: splashVC)
 
                 window.rootViewController = navController
                 window.makeKeyAndVisible()
-                self.window = window    
+                self.window = window
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

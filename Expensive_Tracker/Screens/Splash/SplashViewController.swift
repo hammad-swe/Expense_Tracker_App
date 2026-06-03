@@ -25,7 +25,16 @@ class SplashViewController: UIViewController {
     }
     
     private func navigateToNextScreen() {
-        let vc = GetStartViewController()
-        self.navigationController?.setViewControllers([vc], animated: true)
+        let nextVC: UIViewController
+
+               if CoreDataManager.shared.fetchCurrentBudget() != nil {
+                   // ✅ Budget exists → go to TabBar
+                   nextVC = MainTabBarController()
+               } else {
+                   // ✅ No budget → set budget first
+                   nextVC = SetBudgetViewController(nibName: "SetBudgetViewController", bundle: nil)
+               }
+
+               navigationController?.setViewControllers([nextVC], animated: true)
     }
 }
