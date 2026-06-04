@@ -20,6 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
                 let splashVC = SplashViewController(nibName: "SplashViewController", bundle: nil)
                 let navController = UINavigationController(rootViewController: splashVC)
+        navController.setNavigationBarHidden(true, animated: false)
 
                 window.rootViewController = navController
                 window.makeKeyAndVisible()
