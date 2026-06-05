@@ -49,6 +49,7 @@ class DashBoardViewController: UIViewController {
 
     @objc func cardTapped() {
         let VC = SetBudgetViewController() // or load from XIB
+        VC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(VC, animated: true)
     }
     
@@ -77,6 +78,7 @@ class DashBoardViewController: UIViewController {
     @IBAction func addTapped(_ sender: UIButton) {
         
         let vc = AddExpenseViewController()
+        vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
@@ -84,6 +86,7 @@ class DashBoardViewController: UIViewController {
     
     @IBAction func viewAllTapped(_ sender: Any) {
         let VC = ExpenseListViewController()
+        VC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(VC, animated: true)
     }
     

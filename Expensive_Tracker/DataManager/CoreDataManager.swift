@@ -98,63 +98,63 @@ class CoreDataManager{
     
     // MARK: - ✅ EXPENSE
         
-//        func createExpense(title: String, amount: Double, category: String, note: String, date: Date) {
-//            let expense      = Expense(context: context)
-//            expense.title    = title
-//            expense.amount   = amount
-//            expense.category = category
-//            expense.note     = note
-//            expense.date     = date
-//            saveContext()
-//        }
-//        
-//        func fetchExpenses() -> [Expense] {
-//            let request: NSFetchRequest<Expense> = Expense.fetchRequest()
-//            request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-//            do {
-//                return try context.fetch(request)
-//            } catch {
-//                print("Fetch error: \(error)")
-//                return []
-//            }
-//        }
-//        
-//        func updateExpense(_ expense: Expense, title: String, amount: Double, category: String, note: String) {
-//            expense.title    = title
-//            expense.amount   = amount
-//            expense.category = category
-//            expense.note     = note
-//            saveContext()
-//        }
-//        
-//        func deleteExpense(_ expense: Expense) {
-//            context.delete(expense)
-//            saveContext()
-//        }
-//        
-//        func deleteAllExpenses() {
-//            fetchExpenses().forEach { context.delete($0) }
-//            saveContext()
-//        }
-//        
-//        // MARK: - ✅ CALCULATIONS
-//        
-//        func totalSpent() -> Double {
-//            return fetchExpenses().reduce(0) { $0 + $1.amount }
-//        }
-//        
-//        func remainingBalance() -> Double {
-//            let budget = fetchCurrentBudget()?.totalAmount ?? 0
-//            return budget - totalSpent()
-//        }
-//        
-//        func isOverBudget() -> Bool {
-//            return remainingBalance() < 0
-//        }
-//        
-//        func spentPercentage() -> Float {
-//            let budget = fetchCurrentBudget()?.totalAmount ?? 0
-//            guard budget > 0 else { return 0 }
-//            return Float(totalSpent() / budget)
-//        }
+        func createExpense(title: String, amount: Double, category: String, note: String, date: Date) {
+            let expense      = Expense(context: context)
+            expense.title    = title
+            expense.amount   = amount
+            expense.category = category
+            expense.note     = note
+            expense.date     = date
+            saveContext()
+        }
+        
+        func fetchExpenses() -> [Expense] {
+            let request: NSFetchRequest<Expense> = Expense.fetchRequest()
+            request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+            do {
+                return try context.fetch(request)
+            } catch {
+                print("Fetch error: \(error)")
+                return []
+            }
+        }
+        
+        func updateExpense(_ expense: Expense, title: String, amount: Double, category: String, note: String) {
+            expense.title    = title
+            expense.amount   = amount
+            expense.category = category
+            expense.note     = note
+            saveContext()
+        }
+        
+        func deleteExpense(_ expense: Expense) {
+            context.delete(expense)
+            saveContext()
+        }
+        
+        func deleteAllExpenses() {
+            fetchExpenses().forEach { context.delete($0) }
+            saveContext()
+        }
+        
+        // MARK: - ✅ CALCULATIONS
+        
+        func totalSpent() -> Double {
+            return fetchExpenses().reduce(0) { $0 + $1.amount }
+        }
+        
+        func remainingBalance() -> Double {
+            let budget = fetchCurrentBudget()?.totalAmount ?? 0
+            return budget - totalSpent()
+        }
+        
+        func isOverBudget() -> Bool {
+            return remainingBalance() < 0
+        }
+        
+        func spentPercentage() -> Float {
+            let budget = fetchCurrentBudget()?.totalAmount ?? 0
+            guard budget > 0 else { return 0 }
+            return Float(totalSpent() / budget)
+        }
 }
