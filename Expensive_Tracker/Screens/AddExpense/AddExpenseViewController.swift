@@ -28,16 +28,17 @@ class AddExpenseViewController: UIViewController {
         super.viewDidLoad()
         
         title = "Add Expense"
+        setupCollectionView()
         
     }
     
     func setupCollectionView() {
             categoryCollectionView.delegate   = self
             categoryCollectionView.dataSource = self
-            categoryCollectionView.register(
-                CategoryCell.self,
-                forCellWithReuseIdentifier: "CategoryCell"
-            )
+        
+        
+        let nib = UINib(nibName: "CategoryCell", bundle: nil)
+            categoryCollectionView.register(nib, forCellWithReuseIdentifier: "CategoryCell")
 
             // Flow layout
             let layout = UICollectionViewFlowLayout()
@@ -128,6 +129,7 @@ extension AddExpenseViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        print("✅ Cell loading at index: \(indexPath.item)") 
         let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: "CategoryCell",
                     for: indexPath
