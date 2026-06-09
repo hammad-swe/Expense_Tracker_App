@@ -82,7 +82,6 @@
 				F46BD04D266B7EFFB74B0C6E /* Pods-Expensive_Tracker.debug.xcconfig */,
 				DB3F95A902DDC957543B52E3 /* Pods-Expensive_Tracker.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -164,9 +163,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Expensive_Tracker/Pods-Expensive_Tracker-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Expensive_Tracker/Pods-Expensive_Tracker-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
