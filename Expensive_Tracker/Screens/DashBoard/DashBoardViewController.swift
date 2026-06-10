@@ -18,14 +18,12 @@ class DashBoardViewController: UIViewController {
     @IBOutlet weak var card2: UIStackView!
     @IBOutlet weak var card3: UIStackView!
     @IBOutlet weak var addbutton: UIButton!
- //   @IBOutlet weak var viewallButton: UIButton!
-  //  @IBOutlet weak var dashBoardTable: UITableView!
     @IBOutlet weak var totalBudgetLabel: UILabel!
     @IBOutlet weak var remainingLabel: UILabel!
     @IBOutlet weak var totalSpentLabel: UILabel!
     @IBOutlet weak var budgetUsageLabel: UILabel!
-    
     @IBOutlet weak var spentVsRemainingChartView: PieChartView!
+    @IBOutlet weak var recentTableView: UITableView!
     
     
     
@@ -43,11 +41,13 @@ class DashBoardViewController: UIViewController {
         setUpUI()
         setupCardTap()
         
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         showBudget() // ✅ Refreshes every time you come back to dashboard
+        setupRecentTableView()
     }
     
     func showBudget() {
@@ -78,6 +78,18 @@ class DashBoardViewController: UIViewController {
                             setupSpentVsRemainingChart(spent: 0, remaining: 0)
                         }
             }
+        recentTableView.reloadData()
+    }
+    
+    // MARK: - Recent Expenses Table
+    func setupRecentTableView() {
+        let nib = UINib(nibName: "ExpenseCell", bundle: nil)
+        recentTableView.register(nib, forCellReuseIdentifier: "ExpenseCell")
+        recentTableView.delegate        = self
+        recentTableView.dataSource      = self
+        recentTableView.separatorStyle  = .none
+        recentTableView.isScrollEnabled = false // ✅ inside scrollview
+        recentTableView.backgroundColor = .clear
     }
     
     // MARK: - Pie Chart
@@ -235,4 +247,37 @@ class DashBoardViewController: UIViewController {
         }
     }
     
+}
+
+// MARK: - TableView
+extension DashBoardViewController: UITableViewDataSource, UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        // ✅ Show max 3 recent expenses
+        let expenses = CoreDataManager.shared.fetchExpenses()
+        return min(expenses.count, 3)
+    }
+
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell    = tableView.dequeueReusableCell(
+                        withIdentifier: "ExpenseCell",
+                        for: indexPath) as! ExpenseCell
+        let expenses = CoreDataManager.shared.fetchExpenses()
+        cell.configure(with: expenses[indexPath.row])
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView,
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
+    }
+
+    func tableView(_ tableView: UITableView,
+                   didSelectRowAt indexPath: IndexPath) {
+        let vc = ExpenseListViewController()
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
