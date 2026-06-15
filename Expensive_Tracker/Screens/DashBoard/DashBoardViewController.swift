@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Charts
 import DGCharts
 
 class DashBoardViewController: UIViewController {
@@ -231,7 +232,7 @@ class DashBoardViewController: UIViewController {
     @IBAction func viewAllTapped(_ sender: Any) {
         let VC = ExpenseListViewController()
         VC.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(VC, animated: true)
+        self.navigationController?.pushViewController(VC, animated: true)
     }
     
     

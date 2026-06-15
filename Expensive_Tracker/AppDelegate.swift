@@ -7,6 +7,8 @@
 
 import UIKit
 import FirebaseCore
+import GoogleSignIn
+import FirebaseAuth
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,8 +25,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             return true
     }
-
-    // MARK: UISceneSession Lifecycle
+    // MARK: - Handle Google Sign-In URL callback// MARK: - Handle Google Sign-In URL callback
+        func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+               guard let url = URLContexts.first?.url else { return }
+               GIDSignIn.sharedInstance.handle(url)
+           }
+    
+    // MARK: UISceneSession LifecycleMethod
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.

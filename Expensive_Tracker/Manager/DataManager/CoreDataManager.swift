@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreData
+internal import CoreData
 
 class CoreDataManager{
     static let shared = CoreDataManager()
