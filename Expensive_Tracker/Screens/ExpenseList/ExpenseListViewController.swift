@@ -18,22 +18,22 @@ class ExpenseListViewController: UIViewController {
     @IBOutlet weak var addButton: UIButton!
     
     
-    
-    
-    
-    
-        // MARK: - Properties
-        var allExpenses: [Expense]       = []
-        var filteredExpenses: [Expense]  = []
-
-        // Sections: Today, Yesterday, Earlier This Month
+    // MARK: - Properties
+        var allExpenses: [Expense]         = []
+        var filteredExpenses: [Expense]    = []
         var groupedExpenses: [(String, [Expense])] = []
 
-    let months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN","JUL","AUG", "SEP", "OCT","NOV", "DEC"]
+        let months     = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+                          "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
         let categories = ["All", "Food", "Transport", "Shopping",
                           "Health", "Entertainment", "Education", "Rent", "Utilities"]
 
-        var selectedMonth: String    = "Oct"
+        // ✅ Default to current month
+        var selectedMonth: String    = {
+            let formatter        = DateFormatter()
+            formatter.dateFormat = "MMM"
+            return formatter.string(from: Date()).uppercased()
+        }()
         var selectedCategory: String = "All"
         var searchText: String       = ""
 
@@ -46,6 +46,12 @@ class ExpenseListViewController: UIViewController {
             setupSearchBar()
         }
 
+        override func viewDidLayoutSubviews() {
+            super.viewDidLayoutSubviews()
+            // ✅ Correct place for corner radius
+            styleButton()
+        }
+
         override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
             loadExpenses()
@@ -55,17 +61,15 @@ class ExpenseListViewController: UIViewController {
         func setupUI() {
             title = "Transactions"
             navigationController?.navigationBar.prefersLargeTitles = false
-            
-            styleButton()
         }
-    
-    private func styleButton() {
-        addButton.layer.cornerRadius =   addButton.frame.height / 2
-        addButton.layer.masksToBounds = true
-        addButton.backgroundColor = .blue
-        addButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        addButton.tintColor = .systemBlue
-       }
+
+        private func styleButton() {
+            addButton.layer.cornerRadius  = addButton.frame.height / 2
+            addButton.layer.masksToBounds = true
+            addButton.backgroundColor     = .systemBlue
+            addButton.setImage(UIImage(systemName: "plus"), for: .normal)
+            addButton.tintColor           = .white
+        }
 
         func setupTableView() {
             let nib = UINib(nibName: "ExpenseCell", bundle: nil)
@@ -73,33 +77,33 @@ class ExpenseListViewController: UIViewController {
             tableView.delegate        = self
             tableView.dataSource      = self
             tableView.separatorStyle  = .none
-            tableView.backgroundColor = .systemGroupedBackground
+            tableView.backgroundColor = .white
         }
 
         func setupCollectionViews() {
             // Month filter
-            let monthLayout                     = UICollectionViewFlowLayout()
-            monthLayout.scrollDirection         = .horizontal
-            monthLayout.minimumInteritemSpacing = 8
-            monthLayout.estimatedItemSize       = UICollectionViewFlowLayout.automaticSize
+            let monthLayout                          = UICollectionViewFlowLayout()
+            monthLayout.scrollDirection              = .horizontal
+            monthLayout.minimumInteritemSpacing      = 8
+            monthLayout.estimatedItemSize            = UICollectionViewFlowLayout.automaticSize
             monthCollectionView.collectionViewLayout = monthLayout
             monthCollectionView.showsHorizontalScrollIndicator = false
             monthCollectionView.register(FilterCell.self, forCellWithReuseIdentifier: "FilterCell")
-            monthCollectionView.delegate   = self
-            monthCollectionView.dataSource = self
-            monthCollectionView.tag        = 1
+            monthCollectionView.delegate             = self
+            monthCollectionView.dataSource           = self
+            monthCollectionView.tag                  = 1
 
             // Category filter
-            let catLayout                     = UICollectionViewFlowLayout()
-            catLayout.scrollDirection         = .horizontal
-            catLayout.minimumInteritemSpacing = 8
-            catLayout.estimatedItemSize       = UICollectionViewFlowLayout.automaticSize
-            categoryCollectionView.collectionViewLayout = catLayout
+            let catLayout                                = UICollectionViewFlowLayout()
+            catLayout.scrollDirection                    = .horizontal
+            catLayout.minimumInteritemSpacing            = 8
+            catLayout.estimatedItemSize                  = UICollectionViewFlowLayout.automaticSize
+            categoryCollectionView.collectionViewLayout  = catLayout
             categoryCollectionView.showsHorizontalScrollIndicator = false
             categoryCollectionView.register(FilterCell.self, forCellWithReuseIdentifier: "FilterCell")
-            categoryCollectionView.delegate   = self
-            categoryCollectionView.dataSource = self
-            categoryCollectionView.tag        = 2
+            categoryCollectionView.delegate              = self
+            categoryCollectionView.dataSource            = self
+            categoryCollectionView.tag                   = 2
         }
 
         func setupSearchBar() {
@@ -117,10 +121,10 @@ class ExpenseListViewController: UIViewController {
         func applyFilters() {
             var result = allExpenses
 
-            // Month filter
-            let monthMap = ["Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4,
-                            "May": 5, "Jun": 6, "Jul": 7, "Aug": 8,
-                            "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12]
+            // ✅ Month filter — uppercase match
+            let monthMap = ["JAN": 1, "FEB": 2, "MAR": 3, "APR": 4,
+                            "MAY": 5, "JUN": 6, "JUL": 7, "AUG": 8,
+                            "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12]
 
             if let monthNum = monthMap[selectedMonth] {
                 result = result.filter {
@@ -175,19 +179,63 @@ class ExpenseListViewController: UIViewController {
             if !earlierExpenses.isEmpty   { groupedExpenses.append(("EARLIER THIS MONTH", earlierExpenses)) }
 
             tableView.reloadData()
+            showEmptyStateIfNeeded() // ✅
         }
-    
-    
-    @IBAction func addTapped(_ sender: Any) {
-        
-        let vc = AddExpenseViewController()
-        vc.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(vc, animated: true)
-        
-    }
-    
-    
-    
+
+        // MARK: - ✅ Empty State
+        func showEmptyStateIfNeeded() {
+            if groupedExpenses.isEmpty {
+                let emptyView              = UIView(frame: tableView.bounds)
+
+                let imageView              = UIImageView()
+                imageView.image            = UIImage(systemName: "tray")
+                imageView.tintColor        = .systemGray3
+                imageView.contentMode      = .scaleAspectFit
+                imageView.translatesAutoresizingMaskIntoConstraints = false
+
+                let label                  = UILabel()
+                label.text                 = "No expenses found"
+                label.textColor            = .secondaryLabel
+                label.font                 = .systemFont(ofSize: 16, weight: .medium)
+                label.textAlignment        = .center
+                label.translatesAutoresizingMaskIntoConstraints = false
+
+                let subLabel               = UILabel()
+                subLabel.text              = "Try a different month or category"
+                subLabel.textColor         = .tertiaryLabel
+                subLabel.font              = .systemFont(ofSize: 13)
+                subLabel.textAlignment     = .center
+                subLabel.translatesAutoresizingMaskIntoConstraints = false
+
+                emptyView.addSubview(imageView)
+                emptyView.addSubview(label)
+                emptyView.addSubview(subLabel)
+
+                NSLayoutConstraint.activate([
+                    imageView.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor),
+                    imageView.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor, constant: -40),
+                    imageView.widthAnchor.constraint(equalToConstant: 60),
+                    imageView.heightAnchor.constraint(equalToConstant: 60),
+
+                    label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 12),
+                    label.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor),
+
+                    subLabel.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 6),
+                    subLabel.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor)
+                ])
+
+                tableView.backgroundView = emptyView
+            } else {
+                tableView.backgroundView = nil
+            }
+        }
+
+        // MARK: - Actions
+        @IBAction func addTapped(_ sender: Any) {
+            let vc = AddExpenseViewController()
+            vc.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 
     // MARK: - TableView
@@ -197,33 +245,39 @@ class ExpenseListViewController: UIViewController {
             return groupedExpenses.count
         }
 
-        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        func tableView(_ tableView: UITableView,
+                       numberOfRowsInSection section: Int) -> Int {
             return groupedExpenses[section].1.count
         }
 
-        func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        func tableView(_ tableView: UITableView,
+                       titleForHeaderInSection section: Int) -> String? {
             return groupedExpenses[section].0
         }
 
-        func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        func tableView(_ tableView: UITableView,
+                       willDisplayHeaderView view: UIView, forSection section: Int) {
             guard let header = view as? UITableViewHeaderFooterView else { return }
-            header.textLabel?.font      = .systemFont(ofSize: 15, weight: .bold)
+            header.textLabel?.font      = .systemFont(ofSize: 13, weight: .bold)
             header.textLabel?.textColor = .secondaryLabel
         }
 
-        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell    = tableView.dequeueReusableCell(withIdentifier: "ExpenseCell",
-                                                        for: indexPath) as! ExpenseCell
+        func tableView(_ tableView: UITableView,
+                       cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell    = tableView.dequeueReusableCell(
+                            withIdentifier: "ExpenseCell", for: indexPath) as! ExpenseCell
             let expense = groupedExpenses[indexPath.section].1[indexPath.row]
             cell.configure(with: expense)
             return cell
         }
 
-        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            return 50
+        func tableView(_ tableView: UITableView,
+                       heightForRowAt indexPath: IndexPath) -> CGFloat {
+            return 80
         }
 
-        func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
+        func tableView(_ tableView: UITableView,
+                       commit editingStyle: UITableViewCell.EditingStyle,
                        forRowAt indexPath: IndexPath) {
             if editingStyle == .delete {
                 let expense = groupedExpenses[indexPath.section].1[indexPath.row]
@@ -231,6 +285,49 @@ class ExpenseListViewController: UIViewController {
                 loadExpenses()
             }
         }
+        
+        func tableView(_ tableView: UITableView,
+                       didSelectRowAt indexPath: IndexPath) {
+            tableView.deselectRow(at: indexPath, animated: true)
+            let expense    = groupedExpenses[indexPath.section].1[indexPath.row]
+
+            // ✅ Reuse AddExpenseViewController in edit mode
+            let vc         = AddExpenseViewController(nibName: "AddExpenseViewController", bundle: nil)
+            vc.expenseToEdit = expense  // ✅ Pass expense to edit
+            vc.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(vc, animated: true)
+        }
+        
+        // ✅ Swipe left → Delete
+           func tableView(_ tableView: UITableView,
+                          trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
+                          -> UISwipeActionsConfiguration? {
+
+               let deleteAction = UIContextualAction(
+                   style: .destructive, title: nil) { _, _, completion in
+
+                   let expense = self.groupedExpenses[indexPath.section].1[indexPath.row]
+
+                   let alert = UIAlertController(
+                       title: "Delete Expense",
+                       message: "Are you sure you want to delete \"\(expense.title ?? "this expense")\"?",
+                       preferredStyle: .alert)
+                   alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                       completion(false)
+                   })
+                   alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { _ in
+                       CoreDataManager.shared.deleteExpense(expense)
+                       self.loadExpenses()
+                       completion(true)
+                   })
+                   self.present(alert, animated: true)
+               }
+
+               deleteAction.image           = UIImage(systemName: "trash")
+               deleteAction.backgroundColor = .systemRed
+
+               return UISwipeActionsConfiguration(actions: [deleteAction])
+           }
     }
 
     // MARK: - CollectionView
@@ -261,13 +358,13 @@ class ExpenseListViewController: UIViewController {
         func collectionView(_ collectionView: UICollectionView,
                             didSelectItemAt indexPath: IndexPath) {
             if collectionView.tag == 1 {
-                selectedMonth = months[indexPath.item]
+                selectedMonth = months[indexPath.item]        // ✅ updates month
                 monthCollectionView.reloadData()
             } else {
-                selectedCategory = categories[indexPath.item]
+                selectedCategory = categories[indexPath.item] // ✅ updates category
                 categoryCollectionView.reloadData()
             }
-            applyFilters()
+            applyFilters() // ✅ always refresh table
         }
     }
 
@@ -281,4 +378,6 @@ class ExpenseListViewController: UIViewController {
         func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
             searchBar.resignFirstResponder()
         }
+
+    
     }

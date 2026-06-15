@@ -15,18 +15,40 @@ class ExpenseCell: UITableViewCell {
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
-
+    @IBOutlet weak var cellContainer: UIStackView!
     override func awakeFromNib() {
         super.awakeFromNib()
         setupUI()
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        iconContainerView.layer.cornerRadius = iconContainerView.frame.width / 2
+    }
 
     func setupUI() {
-        iconContainerView.layer.cornerRadius  = 22
+        iconContainerView.layer.cornerRadius  = iconContainerView.frame.width / 2
         iconContainerView.clipsToBounds       = true
+        
+        iconImageView.contentMode = .scaleAspectFit
+            iconImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+                iconImageView.widthAnchor.constraint(equalToConstant: 22),
+                iconImageView.heightAnchor.constraint(equalToConstant: 22),
+                iconImageView.centerXAnchor.constraint(equalTo: iconContainerView.centerXAnchor),
+                iconImageView.centerYAnchor.constraint(equalTo: iconContainerView.centerYAnchor)
+            ])
+        
         selectionStyle                        = .none
         layer.cornerRadius                    = 12
         contentView.layer.cornerRadius        = 12
+        cellContainer.backgroundColor    = .white
+        cellContainer.layer.cornerRadius = 10
+        cellContainer.layer.shadowColor  = UIColor.black.cgColor
+        cellContainer.layer.shadowOpacity = 0.1
+        cellContainer.layer.shadowOffset  = CGSize(width: 0, height: 0)
+        cellContainer.layer.shadowRadius  = 4
     }
 
     func configure(with expense: Expense) {

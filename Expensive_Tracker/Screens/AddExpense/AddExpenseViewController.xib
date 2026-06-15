@@ -57,11 +57,11 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QqS-V2-mLB">
                                                     <rect key="frame" x="0.0" y="36" width="300" height="14.5"/>
                                                     <subviews>
-                                                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="e.g., Grocery Shopping " textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dkr-kA-WAT">
+                                                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="e.g., Grocery Shopping " textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dkr-kA-WAT" userLabel="e.g., Grocery Shopping">
                                                             <rect key="frame" x="0.0" y="0.0" width="300" height="14.5"/>
                                                             <edgeInsets key="layoutMargins" top="10" left="10" bottom="10" right="10"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits"/>
+                                                            <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
                                                         </textField>
                                                     </subviews>
                                                 </stackView>

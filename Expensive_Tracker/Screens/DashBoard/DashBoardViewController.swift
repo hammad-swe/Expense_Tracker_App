@@ -112,13 +112,13 @@ class DashBoardViewController: UIViewController {
             
             // ✅ Entries
             let entries = [
-                PieChartDataEntry(value: spent,     label: "Spent"),
-                PieChartDataEntry(value: remaining, label: "Remaining")
+                PieChartDataEntry(value: spent     ),
+                PieChartDataEntry(value: remaining)
             ]
             
             // ✅ Dataset
             let dataSet = PieChartDataSet(entries: entries, label: "")
-            dataSet.colors               = [UIColor.systemRed, UIColor.systemGreen]
+            dataSet.colors               = [UIColor.systemBlue, UIColor.systemGray]
             dataSet.sliceSpace           = 3
             dataSet.selectionShift       = 6
             dataSet.valueTextColor       = .white
@@ -135,35 +135,38 @@ class DashBoardViewController: UIViewController {
             data.setValueFormatter(PKRValueFormatter())
             
             // ✅ Center text
-            let centerString = "Budget"
-            let attributed = NSMutableAttributedString(string: centerString)
+            let percentage   = Int(CoreDataManager.shared.spentPercentage() * 100)
+            let centerString = "\(percentage)%"
+            let attributed   = NSMutableAttributedString(string: centerString)
             attributed.addAttributes([
                 .foregroundColor: UIColor.label,
                 .font: UIFont.systemFont(ofSize: 14, weight: .bold)
             ], range: NSRange(location: 0, length: centerString.count))
+
+            spentVsRemainingChartView.centerAttributedText = attributed
             
             // ✅ Chart config
             spentVsRemainingChartView.data                           = data
-            spentVsRemainingChartView.holeRadiusPercent              = 0.5
+            spentVsRemainingChartView.holeRadiusPercent              = 0.8
             spentVsRemainingChartView.holeColor                      = .systemBackground
-            spentVsRemainingChartView.transparentCircleRadiusPercent = 0.52
+            spentVsRemainingChartView.transparentCircleRadiusPercent = 0.20
             spentVsRemainingChartView.transparentCircleColor         = .systemBackground.withAlphaComponent(0.3)
             spentVsRemainingChartView.centerAttributedText           = attributed
             spentVsRemainingChartView.drawEntryLabelsEnabled         = false
             spentVsRemainingChartView.usePercentValuesEnabled        = false
             spentVsRemainingChartView.rotationEnabled                = false
-            spentVsRemainingChartView.highlightPerTapEnabled         = true
+            spentVsRemainingChartView.highlightPerTapEnabled         = false
             
             // ✅ Legend
-            spentVsRemainingChartView.legend.enabled             = true
-            spentVsRemainingChartView.legend.horizontalAlignment = .center
-            spentVsRemainingChartView.legend.verticalAlignment   = .bottom
-            spentVsRemainingChartView.legend.orientation         = .horizontal
-            spentVsRemainingChartView.legend.font                = .systemFont(ofSize: 12)
-            spentVsRemainingChartView.legend.textColor           = .label
-            spentVsRemainingChartView.legend.formSize            = 12
-            spentVsRemainingChartView.legend.formToTextSpace     = 5
-            spentVsRemainingChartView.legend.xEntrySpace         = 15
+            spentVsRemainingChartView.legend.enabled             = false
+//            spentVsRemainingChartView.legend.horizontalAlignment = .center
+//            spentVsRemainingChartView.legend.verticalAlignment   = .bottom
+//            spentVsRemainingChartView.legend.orientation         = .horizontal
+//            spentVsRemainingChartView.legend.font                = .systemFont(ofSize: 12)
+//            spentVsRemainingChartView.legend.textColor           = .label
+//            spentVsRemainingChartView.legend.formSize            = 12
+//            spentVsRemainingChartView.legend.formToTextSpace     = 5
+//            spentVsRemainingChartView.legend.xEntrySpace         = 15
             
             // ✅ Animation
             spentVsRemainingChartView.animate(xAxisDuration: 0.8, easingOption: .easeInOutQuart)
@@ -209,9 +212,9 @@ class DashBoardViewController: UIViewController {
     private func styleButton() {
         addbutton.layer.cornerRadius =   addbutton.frame.height / 2
         addbutton.layer.masksToBounds = true
-        addbutton.backgroundColor = .blue
+        addbutton.backgroundColor = .systemBlue
         addbutton.setImage(UIImage(systemName: "plus"), for: .normal)
-        addbutton.tintColor = .systemBlue
+        addbutton.tintColor = .white
        }
     
     
