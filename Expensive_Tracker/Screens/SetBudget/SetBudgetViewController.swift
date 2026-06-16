@@ -36,16 +36,22 @@ class SetBudgetViewController: UIViewController {
         
         uiStepper.minimumValue = 0
         uiStepper.maximumValue = 500000
-        uiStepper.stepValue = 100
+        uiStepper.stepValue = 1
         
         
         amountTextField.text = "0"
-       // amountTextField.layer.borderWidth = 1.5
-       // amountTextField.layer.cornerRadius = 8
-      //  amountTextField.layer.borderColor = UIColor.systemIndigo.cgColor
+        amountTextField.textAlignment = .left
+        amountTextField.layer.borderWidth = 1.5
+        amountTextField.layer.cornerRadius = 8
+        amountTextField.layer.borderColor = UIColor.systemIndigo.cgColor
 
         amountTextField.font = UIFont.systemFont(ofSize: 40, weight: .light)
         amountTextField.keyboardType = .numberPad
+        amountTextField.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            amountTextField.widthAnchor.constraint(equalToConstant: 180)
+        ])
         
             if let budget = CoreDataManager.shared.fetchCurrentBudget() {
                 // ✅ Edit mode

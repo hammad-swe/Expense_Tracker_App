@@ -95,9 +95,9 @@ class ProfileViewController: UIViewController {
 
         // MARK: - Sign In
         @IBAction func signInTapped(_ sender: UIButton) {
-            let vc = LoginViewController()
-            vc.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(vc, animated: true)
+            let vc = LoginViewController(nibName: "LoginViewController", bundle: nil)
+                vc.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(vc, animated: true)
         }
 
         // MARK: - Sign Out

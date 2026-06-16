@@ -13,7 +13,14 @@ class LoginViewController: UIViewController {
     
     
     
+
+ 
+    @IBOutlet weak var emailText: UITextField!
+    @IBOutlet weak var paswordText: UITextField!
+    @IBOutlet weak var eyeButton: UIImageView!
+    
     @IBOutlet weak var googleSignInButton: UIButton!
+    
     
     
     override func viewDidLoad() {

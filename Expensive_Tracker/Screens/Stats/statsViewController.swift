@@ -77,7 +77,7 @@ class statsViewController: UIViewController {
         
         guard spent > 0 || remaining > 0 else {
             spentChart.data = nil
-            let noData = NSAttributedString(
+            let     noData = NSAttributedString(
                 string: "No Expenses",
                 attributes: [
                     .foregroundColor: UIColor.label,
