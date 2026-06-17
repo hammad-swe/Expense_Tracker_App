@@ -95,6 +95,11 @@ class CoreDataManager{
             }
         }
     
+    func updateCurrency(_ currencyCode: String) {
+        guard let budget = fetchCurrentBudget() else { return }
+        budget.currency = currencyCode
+        saveContext()
+    }
     
     // MARK: - ✅ EXPENSE
         

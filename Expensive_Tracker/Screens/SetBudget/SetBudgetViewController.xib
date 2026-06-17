@@ -14,6 +14,7 @@
             <connections>
                 <outlet property="Stack1" destination="BDs-Ly-eza" id="sfz-MR-J7j"/>
                 <outlet property="amountTextField" destination="ANh-S8-92J" id="3Om-jl-j1j"/>
+                <outlet property="currencyButton" destination="uVW-7y-DrV" id="OcC-7e-IpE"/>
                 <outlet property="currencyLabel" destination="BoV-Gh-NZT" id="GWh-Uc-PD2"/>
                 <outlet property="currencyStack" destination="Zjg-jq-Ega" id="b5z-hs-8dK"/>
                 <outlet property="messageStack" destination="ao3-1p-tNd" id="C0g-tp-nc4"/>
@@ -76,6 +77,9 @@
                                                     </connections>
                                                 </stepper>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="2OB-6W-y2F" secondAttribute="trailing" id="iK5-0K-uYj"/>
+                                            </constraints>
                                         </stackView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="_______________________________________________________________" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3mc-sV-l5i">
                                             <rect key="frame" x="0.0" y="41.666666666666629" width="313" height="11"/>
@@ -84,6 +88,10 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="z3D-WV-XPB" secondAttribute="trailing" id="cyc-ck-tMG"/>
+                                        <constraint firstItem="z3D-WV-XPB" firstAttribute="leading" secondItem="Ueh-Id-Fn2" secondAttribute="leading" id="oUh-66-PMF"/>
+                                    </constraints>
                                 </stackView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Example: 80,000 PKR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dF7-yW-evd">
                                     <rect key="frame" x="0.0" y="86.999999999999972" width="313" height="14.333333333333329"/>
@@ -92,6 +100,10 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="Ueh-Id-Fn2" secondAttribute="trailing" id="CSw-fR-qX4"/>
+                                <constraint firstItem="Ueh-Id-Fn2" firstAttribute="leading" secondItem="ldO-Db-QOY" secondAttribute="leading" id="wW6-Lz-jkw"/>
+                            </constraints>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Zjg-jq-Ega">
                             <rect key="frame" x="20" y="141.33333333333334" width="313" height="84.333333333333343"/>
@@ -186,19 +198,19 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

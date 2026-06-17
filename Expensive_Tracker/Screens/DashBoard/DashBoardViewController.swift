@@ -41,6 +41,7 @@ class DashBoardViewController: UIViewController {
         
         setUpUI()
         setupCardTap()
+        NotificationCenter.default.addObserver(self, selector: #selector(currencyChanged), name: CurrencyManager.notificationName, object: nil)
         
         
     }
@@ -48,6 +49,7 @@ class DashBoardViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         showBudget() // ✅ Refreshes every time you come back to dashboard
+        refreshDashboardLabels()
         setupRecentTableView()
     }
     
@@ -81,6 +83,27 @@ class DashBoardViewController: UIViewController {
             }
         recentTableView.reloadData()
     }
+    
+    @objc func currencyChanged() {
+        refreshDashboardLabels()
+    }
+    
+    func refreshDashboardLabels() {
+        // ✅ All three values are ALWAYS stored/calculated in PKR under the hood
+        let totalPKR = CoreDataManager.shared.fetchCurrentBudget()?.totalAmount ?? 0
+        let spentPKR = CoreDataManager.shared.totalSpent()
+        let remainingPKR = CoreDataManager.shared.remainingBalance()
+
+        // ✅ Convert only for display, in whatever currency is currently selected
+        totalBudgetLabel.text  = CurrencyManager.shared.displayString(forPKRAmount: totalPKR)
+        totalSpentLabel.text   = CurrencyManager.shared.displayString(forPKRAmount: spentPKR)
+        remainingLabel.text    = CurrencyManager.shared.displayString(forPKRAmount: remainingPKR)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     
     // MARK: - Recent Expenses Table
     func setupRecentTableView() {
