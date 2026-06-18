@@ -13,8 +13,8 @@ class AddExpenseViewController: UIViewController {
     @IBOutlet weak var amountTextField: UITextField!
     @IBOutlet weak var categoryCollectionView: UICollectionView!
     @IBOutlet weak var noteTextField: UITextField!
-    
     @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet weak var currencyLabel: UILabel!
     
     
     
@@ -45,6 +45,16 @@ class AddExpenseViewController: UIViewController {
                 let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
                 tap.cancelsTouchesInView = false
                 view.addGestureRecognizer(tap)
+        
+        updateCurrencyLabel()
+
+            // ✅ Listen for currency changes while this screen is open
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(updateCurrencyLabel),
+                name: CurrencyManager.notificationName,
+                object: nil
+            )
         
     }
     
@@ -87,10 +97,14 @@ class AddExpenseViewController: UIViewController {
     // ✅ Fill fields with existing expense data
     func populateData() {
         guard let expense = expenseToEdit else { return }
-        titleTextField.text  = expense.title
-        amountTextField.text = String(format: "%.0f", expense.amount)
-        noteTextField.text   = expense.note
-        selectedCategory     = expense.category
+        titleTextField.text = expense.title
+
+        // ✅ Convert stored PKR amount to currently selected currency for display/editing
+        let displayAmount = CurrencyManager.shared.displayAmount(forPKRAmount: expense.amount)
+        amountTextField.text = String(format: "%.0f", displayAmount)
+
+        noteTextField.text = expense.note
+        selectedCategory   = expense.category
         if let date = expense.date { datePicker.date = date }
         categoryCollectionView.reloadData()
     }
@@ -99,6 +113,17 @@ class AddExpenseViewController: UIViewController {
             view.endEditing(true)
         }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc func updateCurrencyLabel() {
+        let code = CurrencyManager.shared.selectedCurrencyCode
+        let option = CurrencyManager.shared.currencyOption(forCode: code)
+        currencyLabel.text = option.short          // e.g. "USD" or "PKR"
+        amountTextField.placeholder = "Amount (\(option.short))"
+    }
+    
     @IBAction func saveTapped(_ sender: UIButton) {
         
         guard let title = titleTextField.text, !title.isEmpty else {
@@ -106,7 +131,7 @@ class AddExpenseViewController: UIViewController {
                 return
             }
             guard let amountText = amountTextField.text,
-                  let amount = Double(amountText), amount > 0 else {
+                  let enteredAmount = Double(amountText), enteredAmount > 0 else {
                 showAlert("Please enter a valid amount")
                 return
             }
@@ -117,6 +142,13 @@ class AddExpenseViewController: UIViewController {
 
             let note = noteTextField.text ?? ""
             let date = datePicker.date
+
+            // ✅ User typed amount in whatever currency is currently selected
+            // Convert to PKR before storing — PKR stays the single source of truth in CoreData
+            let amount = CurrencyManager.shared.convertToPKR(
+                enteredAmount,
+                from: CurrencyManager.shared.selectedCurrencyCode
+            )
 
             if isEditMode {
                 // ✅ Update
@@ -131,7 +163,7 @@ class AddExpenseViewController: UIViewController {
 
             } else {
                 // ✅ Add new
-                let remaining = CoreDataManager.shared.remainingBalance()
+                let remaining = CoreDataManager.shared.remainingBalance() // already in PKR
                 if amount > remaining {
                     showOverBudgetAlert(amount: amount, remaining: remaining) {
                         CoreDataManager.shared.createExpense(
@@ -183,13 +215,13 @@ class AddExpenseViewController: UIViewController {
         
         // Warn if over budget but still allow saving
         func showOverBudgetAlert(amount: Double, remaining: Double, onConfirm: @escaping () -> Void) {
-            let message = "This expense (Rs \(String(format: "%.0f", amount))) exceeds your remaining balance (Rs \(String(format: "%.0f", remaining))). Add anyway?"
-            let alert = UIAlertController(title: "⚠️ Over Budget", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-            alert.addAction(UIAlertAction(title: "Add Anyway", style: .destructive) { _ in
-                onConfirm()
-            })
-            present(alert, animated: true)
+            let amountStr    = CurrencyManager.shared.displayString(forPKRAmount: amount)
+                let remainingStr = CurrencyManager.shared.displayString(forPKRAmount: remaining)
+                let message = "This expense (\(amountStr)) exceeds your remaining balance (\(remainingStr)). Add anyway?"
+                let alert = UIAlertController(title: "⚠️ Over Budget", message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                alert.addAction(UIAlertAction(title: "Add Anyway", style: .destructive) { _ in onConfirm() })
+                present(alert, animated: true)
         }
         
         

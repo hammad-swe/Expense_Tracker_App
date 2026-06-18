@@ -55,6 +55,32 @@ class ProfileViewController: UIViewController {
                     signInButton.isHidden  = false
                 }
             }
+    
+    
+    @IBAction func exportTapped(_ sender: Any) {
+        
+        guard let pdfURL = PDFExportManager.shared.exportExpensesToPDF() else {
+                showAlert("Failed to generate PDF")
+                return
+            }
+
+            // ✅ Share sheet
+            let activityVC = UIActivityViewController(
+                activityItems: [pdfURL],
+                applicationActivities: nil
+            )
+
+            // For iPad
+            if let popover = activityVC.popoverPresentationController {
+                popover.sourceView = view
+                popover.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
+            }
+
+            present(activityVC, animated: true)
+
+    }
+    
+    
 
         // MARK: - Sync
         @IBAction func syncTapped(_ sender: UIButton) {
@@ -113,4 +139,13 @@ class ProfileViewController: UIViewController {
             })
             present(alert, animated: true)
         }
+    
+    
+    func showAlert(_ message: String) {
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+    
+    
     }

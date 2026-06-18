@@ -28,16 +28,9 @@ class DashBoardViewController: UIViewController {
     
     
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("scrollView: \(String(describing: scrollView))")
-            print("spentVsRemainingChartView: \(String(describing: spentVsRemainingChartView))")
-            print("totalBudgetLabel: \(String(describing: totalBudgetLabel))")
-            print("remainingLabel: \(String(describing: remainingLabel))")
-            print("totalSpentLabel: \(String(describing: totalSpentLabel))")
         
         setUpUI()
         setupCardTap()
@@ -48,40 +41,29 @@ class DashBoardViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        showBudget() // ✅ Refreshes every time you come back to dashboard
         refreshDashboardLabels()
-        setupRecentTableView()
+            showBudget()
+            setupRecentTableView()
     }
     
     func showBudget() {
         let manager = CoreDataManager.shared
-            
+
             if let budget = manager.fetchCurrentBudget() {
                 let spent     = manager.totalSpent()
                 let remaining = manager.remainingBalance()
 
-                totalBudgetLabel.text = "Rs \(String(format: "%.0f", budget.totalAmount))"
-                totalSpentLabel.text  = "Rs \(String(format: "%.0f", spent))"
-                remainingLabel.text   = "Rs \(String(format: "%.0f", remaining))"
-
-                budgetUsageLabel.text = "PKR \(formatAmount(spent)) out of PKR \(formatAmount(budget.totalAmount))"
-                // ✅ Color indicator
                 remainingLabel.textColor = manager.isOverBudget() ? .red : .white
-                
+
                 if spentVsRemainingChartView != nil {
-                            setupSpentVsRemainingChart(spent: spent, remaining: max(remaining, 0))
-                        }
-                
+                    setupSpentVsRemainingChart(spent: spent, remaining: max(remaining, 0))
+                }
             } else {
-                totalBudgetLabel.text = "No Budget Set"
-                totalSpentLabel.text  = "Rs 0"
-                remainingLabel.text   = "Rs 0"
-                
                 if spentVsRemainingChartView != nil {
-                            setupSpentVsRemainingChart(spent: 0, remaining: 0)
-                        }
+                    setupSpentVsRemainingChart(spent: 0, remaining: 0)
+                }
             }
-        recentTableView.reloadData()
+            recentTableView.reloadData()
     }
     
     @objc func currencyChanged() {
@@ -89,15 +71,16 @@ class DashBoardViewController: UIViewController {
     }
     
     func refreshDashboardLabels() {
-        // ✅ All three values are ALWAYS stored/calculated in PKR under the hood
-        let totalPKR = CoreDataManager.shared.fetchCurrentBudget()?.totalAmount ?? 0
-        let spentPKR = CoreDataManager.shared.totalSpent()
-        let remainingPKR = CoreDataManager.shared.remainingBalance()
+        let totalPKR     = CoreDataManager.shared.fetchCurrentBudget()?.totalAmount ?? 0
+            let spentPKR      = CoreDataManager.shared.totalSpent()
+            let remainingPKR = CoreDataManager.shared.remainingBalance()
 
-        // ✅ Convert only for display, in whatever currency is currently selected
-        totalBudgetLabel.text  = CurrencyManager.shared.displayString(forPKRAmount: totalPKR)
-        totalSpentLabel.text   = CurrencyManager.shared.displayString(forPKRAmount: spentPKR)
-        remainingLabel.text    = CurrencyManager.shared.displayString(forPKRAmount: remainingPKR)
+            totalBudgetLabel.text  = CurrencyManager.shared.displayString(forPKRAmount: totalPKR)
+            totalSpentLabel.text   = CurrencyManager.shared.displayString(forPKRAmount: spentPKR)
+            remainingLabel.text    = CurrencyManager.shared.displayString(forPKRAmount: remainingPKR)
+
+            // ✅ Fixed — was hardcoded "PKR"
+            budgetUsageLabel.text  = "\(CurrencyManager.shared.displayString(forPKRAmount: spentPKR)) out of \(CurrencyManager.shared.displayString(forPKRAmount: totalPKR))"
     }
 
     deinit {

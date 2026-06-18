@@ -52,25 +52,26 @@ class ExpenseCell: UITableViewCell {
     }
 
     func configure(with expense: Expense) {
-        titleLabel.text    = expense.title ?? ""
-        amountLabel.text   = "-\(formatAmount(expense.amount)) PKR"
-        amountLabel.textColor = .systemRed
+        titleLabel.text = expense.title ?? ""
 
-        let category = expense.category ?? "Other"
-        categoryLabel.text = category
+            // ✅ Use your actual CurrencyManager method
+            let formattedAmount = CurrencyManager.shared.displayString(forPKRAmount: expense.amount)
+            amountLabel.text       = "-\(formattedAmount)"
+            amountLabel.textColor  = .systemRed
 
-        // Time
-        if let date = expense.date {
-            let formatter        = DateFormatter()
-            formatter.dateFormat = "h:mm a"
-            timeLabel.text       = formatter.string(from: date)
-        }
+            let category = expense.category ?? "Other"
+            categoryLabel.text = category
 
-        // Icon + color per category
-        let (icon, color) = iconAndColor(for: category)
-        iconImageView.image    = UIImage(systemName: icon)
-        iconImageView.tintColor = color
-        iconContainerView.backgroundColor = color.withAlphaComponent(0.15)
+            if let date = expense.date {
+                let formatter        = DateFormatter()
+                formatter.dateFormat = "h:mm a"
+                timeLabel.text       = formatter.string(from: date)
+            }
+
+            let (icon, color) = iconAndColor(for: category)
+            iconImageView.image     = UIImage(systemName: icon)
+            iconImageView.tintColor = color
+            iconContainerView.backgroundColor = color.withAlphaComponent(0.15)
     }
 
     func iconAndColor(for category: String) -> (String, UIColor) {

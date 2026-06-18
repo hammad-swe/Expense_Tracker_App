@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="amountTextField" destination="GoK-9k-QxD" id="2se-5T-rJo"/>
                 <outlet property="categoryCollectionView" destination="wOi-gV-TRG" id="bJf-mV-fIP"/>
+                <outlet property="currencyLabel" destination="kxP-Ud-kCY" id="EDc-V4-Uzx"/>
                 <outlet property="datePicker" destination="yjr-my-fTH" id="5DK-ur-Oc8"/>
                 <outlet property="noteTextField" destination="WRs-6i-Mqg" id="8e0-Hp-pp0"/>
                 <outlet property="titleTextField" destination="dkr-kA-WAT" id="s0c-5v-Lc1"/>
@@ -92,7 +93,7 @@
                                                     <rect key="frame" x="0.0" y="25" width="300" height="33"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="WaI-f9-hBy">
-                                                            <rect key="frame" x="0.0" y="0.0" width="195" height="33"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="300" height="33"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RS." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kxP-Ud-kCY">
                                                                     <rect key="frame" x="0.0" y="0.0" width="32.5" height="33"/>
@@ -101,22 +102,12 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.00" placeholder="0.00" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GoK-9k-QxD">
-                                                                    <rect key="frame" x="40.5" y="0.0" width="154.5" height="33"/>
+                                                                    <rect key="frame" x="40.5" y="0.0" width="259.5" height="33"/>
                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                                     <textInputTraits key="textInputTraits"/>
                                                                 </textField>
                                                             </subviews>
                                                         </stackView>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UcR-rP-FfV">
-                                                            <rect key="frame" x="195" y="0.0" width="105" height="33"/>
-                                                            <color key="tintColor" systemColor="tintColor"/>
-                                                            <state key="normal" title="Button"/>
-                                                            <buttonConfiguration key="configuration" style="filled" title="PKR">
-                                                                <fontDescription key="titleFontDescription" type="boldSystem" pointSize="10"/>
-                                                                <color key="baseForegroundColor" systemColor="tintColor"/>
-                                                                <color key="baseBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            </buttonConfiguration>
-                                                        </button>
                                                     </subviews>
                                                 </stackView>
                                             </subviews>
@@ -304,9 +295,6 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.53333333329999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="tintColor">
             <color red="0.0" green="0.53333333329999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
