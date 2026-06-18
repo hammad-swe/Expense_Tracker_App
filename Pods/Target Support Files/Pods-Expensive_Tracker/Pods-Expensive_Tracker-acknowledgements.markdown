@@ -3837,6 +3837,10 @@ FirestoreEncoder
    limitations under the License.
 
 
+## Google-Mobile-Ads-SDK
+
+Copyright 2026 Google LLC
+
 ## GoogleSignIn
 
 
@@ -4042,6 +4046,10 @@ FirestoreEncoder
    See the License for the specific language governing permissions and
    limitations under the License.
 
+
+## GoogleUserMessagingPlatform
+
+Copyright 2025 Google LLC
 
 ## GoogleUtilities
 

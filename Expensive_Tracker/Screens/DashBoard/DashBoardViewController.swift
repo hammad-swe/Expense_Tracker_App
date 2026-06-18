@@ -27,10 +27,14 @@ class DashBoardViewController: UIViewController {
     @IBOutlet weak var recentTableView: UITableView!
     
     
+    @IBOutlet weak var bannerContainerView: BannerAdView!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bannerContainerView.configure(rootViewController: self)
         
         setUpUI()
         setupCardTap()
