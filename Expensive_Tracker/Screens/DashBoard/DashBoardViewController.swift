@@ -235,9 +235,11 @@ class DashBoardViewController: UIViewController {
     
     @IBAction func addTapped(_ sender: UIButton) {
         
-        let vc = AddExpenseViewController()
-        vc.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(vc, animated: true)
+        InterstitialAdManager.shared.showAdIfAvailable(from: self) { [weak self] in
+                let vc = AddExpenseViewController()
+                vc.hidesBottomBarWhenPushed = true
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
         
     }
     

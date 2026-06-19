@@ -159,8 +159,9 @@ class AddExpenseViewController: UIViewController {
                     category: category,
                     note: note
                 )
-                navigationController?.popViewController(animated: true)
-
+                InterstitialAdManager.shared.showAdIfAvailable(from: self) { [weak self] in
+                            self?.navigationController?.popViewController(animated: true)
+                        }
             } else {
                 // ✅ Add new
                 let remaining = CoreDataManager.shared.remainingBalance() // already in PKR
@@ -173,7 +174,10 @@ class AddExpenseViewController: UIViewController {
                             note: note,
                             date: date
                         )
-                        self.tabBarController?.selectedIndex = 0
+                        InterstitialAdManager.shared.showAdIfAvailable(from: self) { [weak self] in
+                                            self?.navigationController?.popViewController(animated: false)
+                                            self?.tabBarController?.selectedIndex = 0
+                                        }
                     }
                     return
                 }
@@ -185,7 +189,10 @@ class AddExpenseViewController: UIViewController {
                     note: note,
                     date: date
                 )
-                tabBarController?.selectedIndex = 0
+                InterstitialAdManager.shared.showAdIfAvailable(from: self) { [weak self] in
+                            self?.navigationController?.popViewController(animated: false)
+                            self?.tabBarController?.selectedIndex = 0
+                        }
             }
     }
         

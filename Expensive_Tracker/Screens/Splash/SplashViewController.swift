@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 class SplashViewController: UIViewController {
     
     @IBOutlet weak var logoicon: UIImageView!
     override func viewDidLoad() {
             super.viewDidLoad()
+        
+        MobileAds.shared.start(completionHandler: nil)
+            AppOpenAdManager.shared.loadAd()
+            InterstitialAdManager.shared.loadAd()
             startSplashTimer()
         }
 

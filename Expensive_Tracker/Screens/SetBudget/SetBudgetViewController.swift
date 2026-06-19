@@ -150,10 +150,17 @@ class SetBudgetViewController: UIViewController {
             CoreDataManager.shared.saveOrUpdateBudget(amount: pkrAmount)
 
             if isEditingBudget {
-                navigationController?.popViewController(animated: true)
+                
+                InterstitialAdManager.shared.showAdIfAvailable(from: self) { [weak self] in
+                    self?.navigationController?.popViewController(animated: false)
+                    self?.tabBarController?.selectedIndex = 0
+                        }
             } else {
-                let VC = DashBoardViewController()
-                navigationController?.setViewControllers([VC], animated: true)
+                
+                InterstitialAdManager.shared.showAdIfAvailable(from: self) { [weak self] in
+                            let vc = DashBoardViewController()
+                            self?.navigationController?.setViewControllers([vc], animated: true)
+                        }
             }
         }
 
