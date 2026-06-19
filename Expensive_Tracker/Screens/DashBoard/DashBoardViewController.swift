@@ -31,10 +31,10 @@ class DashBoardViewController: UIViewController {
     
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bannerContainerView.configure(rootViewController: self)
         
         setUpUI()
         setupCardTap()
@@ -45,6 +45,9 @@ class DashBoardViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+       bannerContainerView.configure(rootViewController: self)
+        
         refreshDashboardLabels()
             showBudget()
             setupRecentTableView()

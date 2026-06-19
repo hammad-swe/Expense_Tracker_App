@@ -11,7 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DashBoardViewController" customModule="Expensive_Tracker" customModuleProvider="target">
             <connections>
                 <outlet property="addbutton" destination="0wj-Fa-IPi" id="HUR-F9-vmw"/>
-                <outlet property="bannerContainerView" destination="7zY-JX-lh6" id="K75-OR-ODW"/>
+                <outlet property="bannerContainerView" destination="wqk-Q6-3z5" id="vDN-Uh-t2X"/>
                 <outlet property="budgetUsageLabel" destination="aTI-4t-8of" id="HWc-iB-XBJ"/>
                 <outlet property="card1" destination="8w1-pe-nxk" id="3BH-dI-u5s"/>
                 <outlet property="card2" destination="Uz3-TQ-fdG" id="zXj-5q-Pq9"/>
@@ -31,17 +31,20 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7zY-JX-lh6" customClass="BannerAdView" customModule="Expensive_Tracker" customModuleProvider="target">
-                    <rect key="frame" x="8" y="20" width="308" height="34"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wqk-Q6-3z5" userLabel="bannerAdview" customClass="BannerAdView" customModule="Expensive_Tracker" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="20" width="316" height="50"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="TNn-FV-q2U"/>
+                    </constraints>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rdK-0r-dqp">
-                    <rect key="frame" x="0.0" y="62" width="316" height="697"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rdK-0r-dqp">
+                    <rect key="frame" x="0.0" y="78" width="316" height="490"/>
                     <subviews>
-                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cjP-OY-sG1" userLabel="contentView">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cjP-OY-sG1" userLabel="contentView">
                             <rect key="frame" x="0.0" y="0.0" width="316" height="904"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="F4V-xO-AbE">
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="F4V-xO-AbE">
                                     <rect key="frame" x="10" y="10" width="296" height="894"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="pBi-Nr-glw">
@@ -215,7 +218,6 @@
                                         <constraint firstAttribute="trailing" secondItem="N5D-df-xyU" secondAttribute="trailing" constant="8" id="QKC-dD-jB0"/>
                                         <constraint firstAttribute="trailing" secondItem="0YX-rf-hrr" secondAttribute="trailing" constant="8" id="Vrm-2s-B54"/>
                                         <constraint firstAttribute="trailing" secondItem="pBi-Nr-glw" secondAttribute="trailing" constant="8" id="Xor-Nj-uX2"/>
-                                        <constraint firstItem="pBi-Nr-glw" firstAttribute="top" secondItem="F4V-xO-AbE" secondAttribute="top" constant="8" id="YAj-3x-gW3"/>
                                         <constraint firstItem="0YX-rf-hrr" firstAttribute="top" secondItem="pBi-Nr-glw" secondAttribute="bottom" constant="30" id="zXK-wF-SJX"/>
                                     </constraints>
                                     <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
@@ -225,15 +227,16 @@
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="F4V-xO-AbE" secondAttribute="trailing" constant="10" id="7J7-Zu-TqJ"/>
                                 <constraint firstAttribute="bottom" secondItem="F4V-xO-AbE" secondAttribute="bottom" id="CMF-Fm-u1P"/>
+                                <constraint firstItem="F4V-xO-AbE" firstAttribute="top" secondItem="cjP-OY-sG1" secondAttribute="top" constant="10" id="o1S-Dr-ASZ"/>
                                 <constraint firstItem="F4V-xO-AbE" firstAttribute="leading" secondItem="cjP-OY-sG1" secondAttribute="leading" constant="10" id="pwL-ID-fGB"/>
                             </constraints>
                         </view>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="cjP-OY-sG1" secondAttribute="trailing" id="ED6-ep-X9o"/>
-                        <constraint firstItem="cjP-OY-sG1" firstAttribute="top" secondItem="rdK-0r-dqp" secondAttribute="top" id="Xt5-13-W9D"/>
+                        <constraint firstAttribute="bottom" secondItem="cjP-OY-sG1" secondAttribute="bottom" id="OoE-jK-qzI"/>
                         <constraint firstItem="cjP-OY-sG1" firstAttribute="width" secondItem="rdK-0r-dqp" secondAttribute="width" id="bkr-Td-jTm"/>
-                        <constraint firstAttribute="bottom" secondItem="cjP-OY-sG1" secondAttribute="bottom" id="llD-Jo-aJP"/>
+                        <constraint firstItem="cjP-OY-sG1" firstAttribute="top" secondItem="rdK-0r-dqp" secondAttribute="top" id="hi4-Cn-nPB"/>
                         <constraint firstItem="cjP-OY-sG1" firstAttribute="leading" secondItem="rdK-0r-dqp" secondAttribute="leading" id="siN-ub-G3a"/>
                     </constraints>
                 </scrollView>
@@ -256,13 +259,14 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="rdK-0r-dqp" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="5Li-vf-5I4"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="7zY-JX-lh6" secondAttribute="trailing" id="BLK-30-g84"/>
+                <constraint firstItem="rdK-0r-dqp" firstAttribute="top" secondItem="wqk-Q6-3z5" secondAttribute="bottom" constant="8" symbolic="YES" id="7D2-YP-4U6"/>
+                <constraint firstItem="wqk-Q6-3z5" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="AeI-KJ-3oa"/>
                 <constraint firstItem="rdK-0r-dqp" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="DWY-35-fpe"/>
-                <constraint firstItem="rdK-0r-dqp" firstAttribute="top" secondItem="7zY-JX-lh6" secondAttribute="bottom" constant="8" symbolic="YES" id="Jk7-V2-2pZ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="wqk-Q6-3z5" secondAttribute="trailing" id="KgS-Gx-VfO"/>
+                <constraint firstItem="wqk-Q6-3z5" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="OQy-f0-7ee"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0wj-Fa-IPi" secondAttribute="trailing" constant="24" id="RAM-ic-vJt"/>
-                <constraint firstItem="7zY-JX-lh6" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="eKV-7A-g0K"/>
                 <constraint firstItem="rdK-0r-dqp" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="fso-Ma-KVe"/>
-                <constraint firstItem="7zY-JX-lh6" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="izP-Qn-NKl"/>
+                <constraint firstItem="wqk-Q6-3z5" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="m45-hq-H1B"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="0wj-Fa-IPi" secondAttribute="bottom" constant="24" id="xnQ-mI-red"/>
             </constraints>
             <point key="canvasLocation" x="135" y="152.11267605633802"/>
