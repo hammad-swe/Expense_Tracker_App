@@ -17,6 +17,7 @@ class SplashViewController: UIViewController {
         MobileAds.shared.start(completionHandler: nil)
             AppOpenAdManager.shared.loadAd()
             InterstitialAdManager.shared.loadAd()
+        RewardedAdManager.shared.loadAd()
             startSplashTimer()
         }
 

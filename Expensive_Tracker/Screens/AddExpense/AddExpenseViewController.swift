@@ -26,6 +26,8 @@ class AddExpenseViewController: UIViewController {
     var expenseToEdit: Expense?
     var isEditMode: Bool { return expenseToEdit != nil }
     
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -143,15 +145,13 @@ class AddExpenseViewController: UIViewController {
             let note = noteTextField.text ?? ""
             let date = datePicker.date
 
-            // ✅ User typed amount in whatever currency is currently selected
-            // Convert to PKR before storing — PKR stays the single source of truth in CoreData
             let amount = CurrencyManager.shared.convertToPKR(
                 enteredAmount,
                 from: CurrencyManager.shared.selectedCurrencyCode
             )
 
             if isEditMode {
-                // ✅ Update
+                // ✅ Edit — no rewarded ad, just save and pop
                 CoreDataManager.shared.updateExpense(
                     expenseToEdit!,
                     title: title,
@@ -160,40 +160,71 @@ class AddExpenseViewController: UIViewController {
                     note: note
                 )
                 InterstitialAdManager.shared.showAdIfAvailable(from: self) { [weak self] in
-                            self?.navigationController?.popViewController(animated: true)
-                        }
+                    self?.navigationController?.popViewController(animated: true)
+                }
+
             } else {
                 // ✅ Add new
-                let remaining = CoreDataManager.shared.remainingBalance() // already in PKR
+                let remaining = CoreDataManager.shared.remainingBalance()
+
                 if amount > remaining {
-                    showOverBudgetAlert(amount: amount, remaining: remaining) {
-                        CoreDataManager.shared.createExpense(
-                            title: title,
-                            amount: amount,
-                            category: category,
-                            note: note,
-                            date: date
-                        )
-                        InterstitialAdManager.shared.showAdIfAvailable(from: self) { [weak self] in
-                                            self?.navigationController?.popViewController(animated: false)
-                                            self?.tabBarController?.selectedIndex = 0
-                                        }
+                    showOverBudgetAlert(amount: amount, remaining: remaining) { [weak self] in
+                        self?.proceedToSave(title: title, amount: amount, category: category, note: note, date: date)
                     }
                     return
                 }
 
-                CoreDataManager.shared.createExpense(
-                    title: title,
-                    amount: amount,
-                    category: category,
-                    note: note,
-                    date: date
-                )
-                InterstitialAdManager.shared.showAdIfAvailable(from: self) { [weak self] in
-                            self?.navigationController?.popViewController(animated: false)
-                            self?.tabBarController?.selectedIndex = 0
-                        }
+                proceedToSave(title: title, amount: amount, category: category, note: note, date: date)
             }
+    }
+    
+    private func proceedToSave(title: String, amount: Double, category: String, note: String, date: Date) {
+        let count = todayExpenseCount()
+        print("💾 Today's expense count: \(count)")
+
+        if count >= 3 {
+            // 4th expense onward → show rewarded ad before saving
+            RewardedAdManager.shared.showAdIfAvailable(from: self) { [weak self] in
+                self?.saveExpenseAndNavigate(title: title, amount: amount, category: category, note: note, date: date)
+            }
+        } else {
+            // First 3 expenses of the day → save freely
+            saveExpenseAndNavigate(title: title, amount: amount, category: category, note: note, date: date)
+        }
+    }
+
+    private func todayExpenseCount() -> Int {
+        let expenses = CoreDataManager.shared.fetchTodayExpenses()
+        return expenses.count
+    }
+    
+    private func showRewardedAdThenSave(title: String, amount: Double, category: String, note: String, date: Date) {
+        // Show alert first so user knows why the ad is appearing
+        let alert = UIAlertController(
+            title: "Watch a short ad",
+            message: "Watch a 30-second ad to complete saving your expense.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Watch Ad", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            RewardedAdManager.shared.showAdIfAvailable(from: self) { [weak self] in
+                self?.saveExpenseAndNavigate(title: title, amount: amount, category: category, note: note, date: date)
+            }
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
+    }
+
+    private func saveExpenseAndNavigate(title: String, amount: Double, category: String, note: String, date: Date) {
+        CoreDataManager.shared.createExpense(
+            title: title,
+            amount: amount,
+            category: category,
+            note: note,
+            date: date
+        )
+        navigationController?.popViewController(animated: false)
+        tabBarController?.selectedIndex = 0
     }
         
         // MARK: - Delete

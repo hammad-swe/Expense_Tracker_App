@@ -162,4 +162,26 @@ class CoreDataManager{
             guard budget > 0 else { return 0 }
             return Float(totalSpent() / budget)
         }
+    
+    func fetchTodayExpenses() -> [Expense] {
+        let context = persistentContainer.viewContext
+        let request: NSFetchRequest<Expense> = Expense.fetchRequest()
+
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: Date())
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+
+        request.predicate = NSPredicate(
+            format: "date >= %@ AND date < %@",
+            startOfDay as NSDate,
+            endOfDay as NSDate
+        )
+
+        do {
+            return try context.fetch(request)
+        } catch {
+            print("Failed to fetch today's expenses: \(error)")
+            return []
+        }
+    }
 }
