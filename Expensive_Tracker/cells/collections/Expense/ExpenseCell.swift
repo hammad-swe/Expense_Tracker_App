@@ -27,51 +27,62 @@ class ExpenseCell: UITableViewCell {
     }
 
     func setupUI() {
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
         iconContainerView.layer.cornerRadius  = iconContainerView.frame.width / 2
         iconContainerView.clipsToBounds       = true
         
         iconImageView.contentMode = .scaleAspectFit
-            iconImageView.translatesAutoresizingMaskIntoConstraints = false
+        iconImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-                iconImageView.widthAnchor.constraint(equalToConstant: 22),
-                iconImageView.heightAnchor.constraint(equalToConstant: 22),
-                iconImageView.centerXAnchor.constraint(equalTo: iconContainerView.centerXAnchor),
-                iconImageView.centerYAnchor.constraint(equalTo: iconContainerView.centerYAnchor)
-            ])
+            iconImageView.widthAnchor.constraint(equalToConstant: 22),
+            iconImageView.heightAnchor.constraint(equalToConstant: 22),
+            iconImageView.centerXAnchor.constraint(equalTo: iconContainerView.centerXAnchor),
+            iconImageView.centerYAnchor.constraint(equalTo: iconContainerView.centerYAnchor)
+        ])
         
-        selectionStyle                        = .none
-        layer.cornerRadius                    = 12
-        contentView.layer.cornerRadius        = 12
-        cellContainer.backgroundColor    = .white
-        cellContainer.layer.cornerRadius = 10
+        selectionStyle                   = .none
+        layer.cornerRadius               = 14
+        contentView.layer.cornerRadius   = 14
+        cellContainer.backgroundColor    = Theme.cardBackground
+        cellContainer.layer.cornerRadius = 14
         cellContainer.layer.shadowColor  = UIColor.black.cgColor
-        cellContainer.layer.shadowOpacity = 0.1
-        cellContainer.layer.shadowOffset  = CGSize(width: 0, height: 0)
-        cellContainer.layer.shadowRadius  = 4
+        cellContainer.layer.shadowOpacity = 0.05
+        cellContainer.layer.shadowOffset  = CGSize(width: 0, height: 3)
+        cellContainer.layer.shadowRadius  = 8
+        cellContainer.layer.borderWidth   = 1
+        cellContainer.layer.borderColor   = Theme.subtleBorderColor.cgColor
     }
 
     func configure(with expense: Expense) {
         titleLabel.text = expense.title ?? ""
+        titleLabel.font = .systemFont(ofSize: 15, weight: .semibold)
+        titleLabel.textColor = .label
 
-            // ✅ Use your actual CurrencyManager method
-            let formattedAmount = CurrencyManager.shared.displayString(forPKRAmount: expense.amount)
-            amountLabel.text       = "-\(formattedAmount)"
-            amountLabel.textColor  = .systemRed
+        // ✅ Use your actual CurrencyManager method
+        let formattedAmount = CurrencyManager.shared.displayString(forPKRAmount: expense.amount)
+        amountLabel.text       = "-\(formattedAmount)"
+        amountLabel.font       = .systemFont(ofSize: 15, weight: .bold)
+        amountLabel.textColor  = Theme.coralRed
 
-            let category = expense.category ?? "Other"
-            categoryLabel.text = category
+        let category = expense.category ?? "Other"
+        categoryLabel.text = category
+        categoryLabel.font = .systemFont(ofSize: 12, weight: .medium)
+        categoryLabel.textColor = .secondaryLabel
 
-            if let date = expense.date {
-                let formatter        = DateFormatter()
-                formatter.dateFormat = "h:mm a"
-                timeLabel.text       = formatter.string(from: date)
-            }
+        if let date = expense.date {
+            let formatter        = DateFormatter()
+            formatter.dateFormat = "MMM d • h:mm a"
+            timeLabel.text       = formatter.string(from: date)
+            timeLabel.font       = .systemFont(ofSize: 11, weight: .regular)
+            timeLabel.textColor  = .tertiaryLabel
+        }
 
-            let (icon, color) = iconAndColor(for: category)
-            iconImageView.image     = UIImage(systemName: icon)
-            iconImageView.tintColor = color
-            iconContainerView.backgroundColor = color.withAlphaComponent(0.15)
+        let (icon, color) = iconAndColor(for: category)
+        iconImageView.image     = UIImage(systemName: icon)
+        iconImageView.tintColor = color
+        iconContainerView.backgroundColor = color.withAlphaComponent(0.14)
     }
 
     func iconAndColor(for category: String) -> (String, UIColor) {
