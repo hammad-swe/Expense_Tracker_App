@@ -22,22 +22,23 @@ class CategoryCell: UICollectionViewCell {
 
     // MARK: - Setup
     func setupCell() {
-        contentView.layer.cornerRadius = 16
-        contentView.layer.borderWidth  = 1.5
+        contentView.layer.cornerRadius = 14
         contentView.clipsToBounds      = true
     }
 
     // MARK: - Configure
     func configure(title: String, isSelected: Bool) {
         titleLabel.text = title
+        titleLabel.adjustsFontSizeToFitWidth = true
 
         if isSelected {
-            contentView.backgroundColor   = .systemBlue
-            contentView.layer.borderColor = UIColor.systemBlue.cgColor
+            contentView.backgroundColor   = Theme.primaryIndigo
+            contentView.layer.borderWidth = 0
             titleLabel.textColor          = .white
         } else {
-            contentView.backgroundColor   = .systemGray6
-            contentView.layer.borderColor = UIColor.systemGray4.cgColor
+            contentView.backgroundColor   = .tertiarySystemFill
+            contentView.layer.borderWidth = 1
+            contentView.layer.borderColor = Theme.subtleBorderColor.cgColor
             titleLabel.textColor          = .label
         }
     }

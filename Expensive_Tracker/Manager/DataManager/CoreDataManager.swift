@@ -124,11 +124,14 @@ class CoreDataManager{
             }
         }
         
-        func updateExpense(_ expense: Expense, title: String, amount: Double, category: String, note: String) {
+        func updateExpense(_ expense: Expense, title: String, amount: Double, category: String, note: String, date: Date? = nil) {
             expense.title    = title
             expense.amount   = amount
             expense.category = category
             expense.note     = note
+            if let date = date {
+                expense.date = date
+            }
             saveContext()
         }
         

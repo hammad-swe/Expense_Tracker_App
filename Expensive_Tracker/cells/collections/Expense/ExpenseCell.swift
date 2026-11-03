@@ -95,6 +95,7 @@ class ExpenseCell: UITableViewCell {
         case "📚 Education":   return ("book.fill",           .systemGreen)
         case "🏠 Rent":        return ("house.fill",          .systemTeal)
         case "⚡ Utilities":   return ("bolt.fill",           .systemYellow)
+        case "🔖 Other", "Other": return ("tag.fill",        Theme.primaryIndigo)
         default:               return ("plus.circle.fill",    .systemGray)
         }
     }
