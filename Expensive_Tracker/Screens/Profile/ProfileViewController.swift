@@ -39,6 +39,7 @@ class ProfileViewController: UIViewController {
     // MARK: - Setup
     func setupUI() {
         title = "Profile"
+        view.backgroundColor = .systemGroupedBackground
         
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = windowScene.windows.first {
@@ -56,7 +57,6 @@ class ProfileViewController: UIViewController {
     private func setupCurrencyDropdown() {
         guard let currencyButton = currencyButton else { return }
         let selectedCode = CurrencyManager.shared.selectedCurrencyCode
-        let currentOption = CurrencyManager.shared.currencyOption(forCode: selectedCode)
         let shortDisplay = selectedCode == "USD" ? "USD ($)" : "PKR (Rs)"
         currencyButton.setTitle(shortDisplay, for: .normal)
         
@@ -72,7 +72,6 @@ class ProfileViewController: UIViewController {
         }
         currencyButton.menu = UIMenu(title: "Select Display Currency", options: .displayInline, children: actions)
         currencyButton.showsMenuAsPrimaryAction = true
-        let _ = currentOption
     }
 
     func updateUI() {
@@ -119,13 +118,11 @@ class ProfileViewController: UIViewController {
             return
         }
 
-        // ✅ Share sheet
         let activityVC = UIActivityViewController(
             activityItems: [pdfURL],
             applicationActivities: nil
         )
 
-        // For iPad
         if let popover = activityVC.popoverPresentationController {
             popover.sourceView = view
             popover.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
@@ -138,7 +135,6 @@ class ProfileViewController: UIViewController {
     @IBAction func syncTapped(_ sender: UIButton) {
         guard AuthManager.shared.isLoggedIn else { return }
 
-        // ✅ Show syncing state
         syncButton.isEnabled = false
         syncButton.setTitle("Syncing...", for: .normal)
 
@@ -151,15 +147,12 @@ class ProfileViewController: UIViewController {
                 self.syncButton.isEnabled = true
 
                 if let error = error {
-                    // ✅ Show failed in button
-                    self.syncButton.setTitle("Sync Failed ❌", for: .normal)
+                    self.syncButton.setTitle("Sync Failed", for: .normal)
                     print("Sync error: \(error.localizedDescription)")
                 } else {
-                    // ✅ Show success in button
-                    self.syncButton.setTitle("Synced ✅", for: .normal)
+                    self.syncButton.setTitle("Synced", for: .normal)
 
-                    // Reset back to "Sync Data" after 3 seconds
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                         self.syncButton.setTitle("Sync Data", for: .normal)
                     }
                 }
